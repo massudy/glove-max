@@ -30,14 +30,14 @@ class Glove {
 
     }
 
-    cosineSimilarity(word1, word2) {
+    cosineSimilarity(word1, word2,config = {full_jarowink : false}) {
         // Get the vectors and norms for each word from the this.wordVectors and this.vectorNorms objects
         const vector1 = this.wordVectors[word1];
         const vector2 = this.wordVectors[word2];
         const norm1 = this.vectorNorms[word1];
         const norm2 = this.vectorNorms[word2];
       
-        if (!vector1 || !vector2) {
+        if ((!vector1 || !vector2) || config.full_jarowink) {
           return Glove.jaroWinklerDistance(word1,word2)
         }
       
@@ -50,7 +50,7 @@ class Glove {
         return cosineSimilarity;
       }
       
-      textCosineSimilarity(text1, text2) {
+      textCosineSimilarity(text1, text2,config = {full_jarowink : false}) {
         // Tokenize the texts
         const sections1 = Glove.MasterToken(text1);
         const sections2 = Glove.MasterToken(text2);
@@ -72,7 +72,7 @@ class Glove {
               for (let l = 0; l < section2.tokens.length; l++) {
                 const token2 = section2.tokens[l];
                 if(token1 && token2){
-                    sectionSimilarity += this.cosineSimilarity(token1, token2);
+                    sectionSimilarity += this.cosineSimilarity(token1, token2,config);
                     wordCount++;
                 }
                
